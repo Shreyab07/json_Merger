@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Merger Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        #container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            margin: auto;
+        }
+
+        #output {
+            font-size: 16px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        #mergeBtn {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #jsonInput1, #jsonInput2 {
+            width: 48%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        @media screen and (max-width: 600px) {
+            #jsonInput1, #jsonInput2 {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h2>JSON Merger Tool</h2>
+        <textarea id="jsonInput1" placeholder="Enter JSON 1"></textarea>
+        <textarea id="jsonInput2" placeholder="Enter JSON 2"></textarea>
+        <button id="mergeBtn" onclick="mergeJSON()">Merge JSON</button>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function mergeJSON() {
+            var jsonInput1 = document.getElementById('jsonInput1').value;
+            var jsonInput2 = document.getElementById('jsonInput2').value;
+
+            try {
+                var mergedJSON = JSON.stringify(Object.assign(JSON.parse(jsonInput1), JSON.parse(jsonInput2)), null, 2);
+                document.getElementById('output').innerHTML = "<pre>" + mergedJSON + "</pre>";
+            } catch (error) {
+                document.getElementById('output').innerHTML = "<div style='color: red;'>Error: Invalid JSON</div>";
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
