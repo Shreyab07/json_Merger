@@ -28,6 +28,9 @@
             margin-top: 20px;
             white-space: pre-wrap;
             word-break: break-word;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
         }
 
         #mergeBtn {
@@ -69,28 +72,35 @@
             var jsonInput2 = document.getElementById('jsonInput2').value;
 
             try {
-                var mergedJSON = JSON.stringify(Object.assign(JSON.parse(jsonInput1), JSON.parse(jsonInput2)), null, 2);
-                document.getElementById('output').innerHTML = "<pre>" + mergedJSON + "</pre>";
+                var parsedJson1 = JSON.parse(jsonInput1);
+                var parsedJson2 = JSON.parse(jsonInput2);
+
+                // Ensure both inputs are objects
+                if (typeof parsedJson1 === 'object' && typeof parsedJson2 === 'object') {
+                    // Concatenate arrays under the "user name" key
+                    if (Array.isArray(parsedJson1['user name']) && Array.isArray(parsedJson2['user name'])) {
+                        parsedJson1['user name'] = Array.from(new Set(parsedJson1['user name'].concat(parsedJson2['user name'])));
+                    } else {
+                        // If not arrays, merge objects without repeating keys
+                        for (var key in parsedJson2) {
+                            if (!parsedJson1.hasOwnProperty(key)) {
+                                parsedJson1[key] = parsedJson2[key];
+                            }
+                        }
+                    }
+
+                    var mergedJSON = JSON.stringify(parsedJson1, null, 2);
+
+                    var outputHTML = "<h3>Merged JSON:</h3><pre>" + mergedJSON + "</pre>";
+
+                    document.getElementById('output').innerHTML = outputHTML;
+                } else {
+                    throw new Error("Invalid JSON");
+                }
             } catch (error) {
-                document.getElementById('output').innerHTML = "<div style='color: red;'>Error: Invalid JSON</div>";
+                document.getElementById('output').innerHTML = "<div style='color: red;'>Error: " + error.message + "</div>";
             }
         }
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
